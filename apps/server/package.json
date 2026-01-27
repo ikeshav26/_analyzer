@@ -6,6 +6,7 @@
   "scripts": {
     "dev": " nodemon index.js",
     "format": "prettier --write .",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -20,6 +21,8 @@
     "nodemon": "^3.1.11"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:^",
+    "eslint": "^8.57.0",
     "prettier": "^3.2.5"
   }
 }
