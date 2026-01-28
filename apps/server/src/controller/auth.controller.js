@@ -1,7 +1,5 @@
 import User from '../models/user.model.js';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs'
-import { clearCookies, genrerateToken, hashPasswrord,verifyPassword } from '../utils/helper.js';
+import { clearCookies, generateToken, hashPasswrord,verifyPassword } from '../utils/helper.js';
 
 
 
@@ -20,7 +18,7 @@ export const signup=async (req,res)=>{
 
         const hashedPassword=await hashPasswrord(password);
         const newUser=await User.create({username,email,password:hashedPassword});
-        const token=await genrerateToken(newUser._id);
+        const token=await generateToken(newUser._id);
 
         res.cookie('token',token,{
             httpOnly:true,
@@ -54,7 +52,7 @@ export const login=async(req,res)=>{
         if(!isPasswordValid){
             return res.status(400).json({message:"Invalid credentials"});
         }
-        const token=await genrerateToken(user._id);     
+        const token=await generateToken(user._id);     
 
         res.cookie('token',token,{
             httpOnly:true,

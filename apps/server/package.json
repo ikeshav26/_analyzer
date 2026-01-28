@@ -22,7 +22,9 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.5",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:^",

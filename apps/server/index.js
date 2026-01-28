@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDb } from './src/config/DB.js';
 import authRoutes from './src/routes/auth.routes.js';
+import oauthRoutes from './src/routes/oauth.routes.js';
 import cookieParser from 'cookie-parser';
 
 
@@ -19,8 +20,8 @@ app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
-app.use('/api/auth',authRoutes);
-
+app.use('/api/user/auth',authRoutes);
+app.use('/api/auth', oauthRoutes);
 
 
 app.listen(process.env.PORT, () => {

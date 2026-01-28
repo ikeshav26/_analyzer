@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 
-export const genrerateToken=(userId)=>{
+export const generateToken=(userId)=>{
     try{
         const token=jwt.sign({id:userId},process.env.JWT_SECRET,{
             expiresIn:'7d'
