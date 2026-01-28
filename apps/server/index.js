@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDb } from './src/config/DB.js';
+import authRoutes from './src/routes/auth.routes.js';
+import cookieParser from 'cookie-parser';
 
 
 dotenv.config();
@@ -8,10 +10,19 @@ dotenv.config();
 const app = express();
 connectDb();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
+app.use('/api/auth',authRoutes);
+
+
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on ${process.env.PORT}`);
 });
