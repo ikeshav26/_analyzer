@@ -1,13 +1,13 @@
-import {Strategy as GoogleStrategy} from 'passport-google-oauth20';
+import {Strategy as GithubStrategy} from 'passport-github2';
 import passport from 'passport';
 import User from '../models/user.model.js';
 
 passport.use(
-  new GoogleStrategy(
+  new GithubStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.API_URL}/auth/google/callback`,
+      clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: `${process.env.API_URL}/auth/github/callback`,
       scope: ['profile', 'email'],
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -15,11 +15,11 @@ passport.use(
         const email = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null;
 
         if (!email) {
-          return done(new Error('No email provided by Google'), null);
+          return done(new Error('No email provided by GitHub'), null);
         }
 
     
-        let user = await User.findOne({ providerId: profile.id, authProvider: 'google' });
+        let user = await User.findOne({ providerId: profile.id, authProvider: 'github' });
         if (!user) {
           user = await User.findOne({ email });
           if (user) {
@@ -31,8 +31,16 @@ passport.use(
                 null
               );
             }
+            if (user.authProvider === 'google' && user.providerId) {
+              return done(
+                new Error(
+                  'An account with this email already exists with Google login. Please sign in with Google instead.'
+                ),
+                null
+              );
+            }
 
-            user.authProvider = 'google';
+            user.authProvider = 'github';
             user.providerId = profile.id;
             user.emailVerified = true;
             await user.save();
@@ -40,7 +48,7 @@ passport.use(
             user = new User({
               name: profile.displayName || email.split('@')[0],
               email: email,
-              authProvider: 'google',
+              authProvider: 'github',
               providerId: profile.id,
               emailVerified: true,
             });
@@ -50,7 +58,7 @@ passport.use(
 
         return done(null, user);
       } catch (err) {
-        console.error('Google OAuth error', err);
+        console.error('GitHub OAuth error', err);
         return done(err, null);
       }
     }

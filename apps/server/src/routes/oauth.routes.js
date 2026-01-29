@@ -1,6 +1,7 @@
 import express from 'express';
-import passport from '../config/passport.js';
-import { oauthController } from '../controller/oauth.controller.js';
+import passport from '../config/passport-google.js';
+import { googleOauthController } from '../controller/google-oauth.controller.js';
+import { githubOauthController } from '../controller/github-oauth.js';
 
 
 const router=express.Router();
@@ -14,7 +15,14 @@ router.get(
   })
 );
 
-router.get('/google/callback', oauthController);
+router.get('/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] }));
+
+router.get('/google/callback', googleOauthController);
+
+
+
+router.get('/github/callback', githubOauthController);
 
 
 

@@ -1,13 +1,13 @@
 import { generateToken } from "../utils/helper.js";
-import passport from "../config/passport.js";
+import passport from "../config/passport-github.js";
 
 
 
-export const oauthController= (req, res, next) => {
+export const githubOauthController= (req, res, next) => {
   try{
-    passport.authenticate('google', { session: false }, (err, user) => {
+    passport.authenticate('github', { session: false }, (err, user) => {
     if (err) {
-      console.error('Google OAuth error', err);
+      console.error('GitHub OAuth error', err);
       return res.redirect(
         `${process.env.CLIENT_URL}/login?error=oauth_failed&message="Authentication failed"`
       );
