@@ -1,4 +1,4 @@
-import analyzeNewsFromAi from "../config/gemini.service.js";
+import analyzeNewsFromAi from "../config/news-analyzer-ai.service.js";
 
 
 
